@@ -1,0 +1,9 @@
+providers:
+  ray:
+    base_url: http://localhost:8000
+    requst_timeout: 30s
+
+models:
+  fast:
+    - provider: ray
+      model: llama

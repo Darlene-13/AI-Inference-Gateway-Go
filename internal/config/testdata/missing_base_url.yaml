@@ -1,0 +1,8 @@
+providers:
+  ray:
+    request_timeout: 30s
+
+models:
+  fast:
+    - provider: ray
+      model: llama

@@ -1,0 +1,17 @@
+server:
+  addr: ":9090"
+  max_body_bytes: 2048
+
+providers:
+  ray:
+    base_url: ${TEST_RAY_URL:-http://localhost:8000}
+    request_timeout: 90s
+  ollama:
+    base_url: http://localhost:11434
+
+models:
+  fast:
+    - provider: ray
+      model: llama
+    - provider: ollama
+      model: "llama3.2:1b"

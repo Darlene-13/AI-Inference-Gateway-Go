@@ -1,0 +1,40 @@
+# Your two-machine setup. Start with:  make run
+# Hosts come from environment variables with defaults for your Tailscale network,
+# so anyone else can run it by setting RAY_URL / OLLAMA_URL instead of editing this file.
+
+server:
+  addr: ":8080"
+
+log:
+  level: info
+  format: text   # readable in a terminal; use json in production
+
+providers:
+  ray:
+    # Ray Serve on the PC (ai-inference-01), over Tailscale.
+    base_url: ${RAY_URL:-http://ai-inference-01:8000}
+    connect_timeout: 3s
+    request_timeout: 120s   # CPU inference is slow
+  ollama:
+    # Ollama on the laptop. It already speaks the OpenAI format.
+    base_url: ${OLLAMA_URL:-http://localhost:11434}
+    connect_timeout: 2s
+    request_timeout: 120s
+
+models:
+  # The names clients put in "model", each mapped to real models in order.
+  llama:
+    - provider: ray
+      model: llama
+  qwen:
+    - provider: ray
+      model: qwen
+  local:
+    - provider: ollama
+      model: "${OLLAMA_MODEL:-llama3.2:1b}"
+  fast:
+    # F1 uses the first target only. In F5, if Ray is down, Ollama answers.
+    - provider: ray
+      model: llama
+    - provider: ollama
+      model: "${OLLAMA_MODEL:-llama3.2:1b}"

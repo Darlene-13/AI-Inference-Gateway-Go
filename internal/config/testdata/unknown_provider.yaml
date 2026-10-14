@@ -1,0 +1,8 @@
+providers:
+  ray:
+    base_url: http://localhost:8000
+
+models:
+  fast:
+    - provider: olama
+      model: llama3.2:1b
