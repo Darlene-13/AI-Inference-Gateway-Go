@@ -1,0 +1,46 @@
+# CI: on every push and pull request, GitHub builds on a clean Linux machine.
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read ]   # least priviledge cause it actually neeeds to write code only,
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-go@v6
+        with:
+          go-version-file: go.mod # the Go version written in go.mod
+      - uses: golangci/golangci-lint-action@v9
+        with:
+          version: v2.13
+
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-go@v6
+        with:
+          go-version-file: go.mod
+      - name: Tests with the race detector
+        run: go test -race -count=1 -coverprofile=coverage.out ./...
+      - name: Coverage total
+        run: go tool cover -func=coverage.out | tail -1
+
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-go@v6
+        with:
+          go-version-file: go.mod
+      - name: Build the binary
+        run: go build -o bin/gateway ./cmd/gateway
+      - name: The binary starts and prints its version
+        run: ./bin/gateway -version
