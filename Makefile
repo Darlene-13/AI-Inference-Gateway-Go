@@ -5,7 +5,7 @@ help: ## list the commands
 	@grep -E '^[a-z-]+:.*## ' Makefile | awk -F ':.*## ' '{printf "  %-10s %s\n", $$1, $$2}'
 
 run: ## start the gateway with your local config
-	go run ./cmd/gateway -config configs/local.yaml
+	go run ./cmd/gateway -config internal/config/local.yaml
 
 test: ## run all unit tests
 	go test ./...

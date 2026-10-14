@@ -7,7 +7,7 @@ on:
   pull_request:
 
 permissions:
-  contents: read ]   # least priviledge cause it actually neeeds to write code only,
+  contents: read   # least privilege: CI only needs to read the code
 
 jobs:
   lint:
