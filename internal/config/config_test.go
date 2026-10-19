@@ -9,8 +9,6 @@ import (
 	"time"
 )
 
-// fakeEnv returns a lookup function backed by a map, so tests never depend on
-// the real environment of the machine running them.
 func fakeEnv(vars map[string]string) func(string) (string, bool) {
 	return func(name string) (string, bool) {
 		v, ok := vars[name]

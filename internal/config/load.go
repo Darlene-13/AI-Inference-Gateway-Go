@@ -12,8 +12,6 @@ import (
 	"go.yaml.in/yaml/v3"
 )
 
-// Load reads, expands and validates the config at file path
-// Create a function called load that takes filepath as a string a returns a pointer to config or an error
 func Load(path string) (*Config, error) {
 	raw, err := os.ReadFile(path)
 	if err != nil {
@@ -28,7 +26,6 @@ func Load(path string) (*Config, error) {
 	return cfg, nil
 }
 
-// Parse loads the file on bytes that is already in memory. The env lookup is passed in so tests can actually use a fake env
 func Parse(raw []byte, lookupEnv func(string) (string, bool)) (*Config, error) {
 	expanded := expandEnv(string(raw), lookupEnv)
 
@@ -56,7 +53,7 @@ func Parse(raw []byte, lookupEnv func(string) (string, bool)) (*Config, error) {
 
 var envPattern = regexp.MustCompile(`\$\{([A-Za-z_][A-Za-z0-9_]*)(?::-([^}]*))?\}`)
 
-// Ensures that the env pattern matches the ${NAME} and
+
 func expandEnv(s string, lookupEnv func(string) (string, bool)) string {
 	return envPattern.ReplaceAllStringFunc(s, func(match string) string {
 		parts := envPattern.FindStringSubmatch(match)
@@ -78,7 +75,6 @@ func (c *Config) applyDefaults() {
 	setIfZero(&c.Log.Level, "info")
 	setIfZero(&c.Log.Format, "text")
 
-	// Map values are not addressable, so copy each provider out and write it back
 	for name, p := range c.Providers {
 		setIfZero(&p.ConnectTimeout, 2*time.Second)
 		setIfZero(&p.RequestTimeout, 60*time.Second)

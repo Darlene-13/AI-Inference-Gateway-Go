@@ -14,7 +14,7 @@ type ChatRequest struct {
 	Temperature *float64
 }
 
-// Tracks token usage
+// Usage Tracks token usage
 type Usage struct {
 	PromptTokens     int
 	CompletionTokens int

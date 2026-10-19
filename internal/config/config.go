@@ -1,5 +1,3 @@
-// Package config loads the gateway settings from the yaml file and fills it in
-// Equivalent in springboot is the application.yml in resources.
 package config
 
 import "time"
