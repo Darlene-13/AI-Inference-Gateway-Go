@@ -1,15 +1,13 @@
 package core
 
-//Package core holds the gateways's own types: what a chat request and response looks like inside the gateway and how errors are classified
-
 type Message struct {
-	Role    string //"system", "user", "assistant"
+	Role    string
 	Content string
 }
 
 type ChatRequest struct {
-	Model       string    // The alias the client asked for ie: fast
-	Messages    []Message // The conversation so far
+	Model       string
+	Messages    []Message
 	MaxTokens   *int
 	Temperature *float64
 }
